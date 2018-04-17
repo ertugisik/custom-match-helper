@@ -12,16 +12,16 @@ namespace CustomMatchLibrary
     {
         public static T Match<T>(this object entity) where T : class, new()
         {
-            T returnObj = new T();
+            T targetObj = new T();
 
             foreach (var sourceProp in entity.GetType().GetProperties())
             {
-                var property = returnObj.GetType().GetProperties().Where(x => x.Name == sourceProp.Name).SingleOrDefault();
+                PropertyInfo property = GetProperty(targetObj, sourceProp);
 
                 if (property == null)
                     continue;
 
-                var name = sourceProp.Name;
+                var name = property.Name;
                 var value = sourceProp.GetValue(entity);
 
                 foreach (var item in property.GetCustomAttributes(true))
@@ -35,10 +35,40 @@ namespace CustomMatchLibrary
                 }
 
                 if (property.PropertyType.FullName == value.GetType().FullName)
-                    returnObj.GetType().GetProperty(name).SetValue(returnObj, value);
+                    targetObj.GetType().GetProperty(name).SetValue(targetObj, value);
             }
 
-            return returnObj;
+            return targetObj;
+        }
+
+        private static PropertyInfo GetProperty(object target, PropertyInfo sourceProp)
+        {
+            PropertyInfo property = null;
+
+            foreach (var prop in target.GetType().GetProperties())
+            {
+                if (prop.Name == sourceProp.Name)
+                {
+                    property = prop;
+                    break;
+                }
+                else
+                {
+                    foreach (var attribute in prop.GetCustomAttributes(true))
+                    {
+                        if (attribute is DomainPropertyName dpAtt)
+                        {
+                            if (dpAtt.Name == sourceProp.Name)
+                            {
+                                property = prop;
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+
+            return property;
         }
     }
 }

@@ -51,9 +51,12 @@
     <Compile Include="DataTransferObjects\CategoryDTO.cs" />
     <Compile Include="DataTransferObjects\ProductDTO.cs" />
     <Compile Include="DataTransferObjects\SubCategoryDTO.cs" />
+    <Compile Include="DataTransferObjects\TokenDTO.cs" />
+    <Compile Include="DomainPropertyName.cs" />
     <Compile Include="Domain\Category.cs" />
     <Compile Include="Domain\Product.cs" />
     <Compile Include="Domain\SubCategory.cs" />
+    <Compile Include="Domain\Token.cs" />
     <Compile Include="Match.cs" />
     <Compile Include="Matcher.cs" />
     <Compile Include="MatchUnitTest.cs" />

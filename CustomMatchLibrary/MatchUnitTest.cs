@@ -28,5 +28,15 @@ namespace CustomMatchLibrary
 
             var dtoObject = product.Match<ProductDTO>();
         }
+
+        [TestMethod]
+        public void TestMethodDifferentPropNames()
+        {
+            Token token = new Token();
+            token.access_token = Guid.NewGuid().ToString();
+            token.token_type = "2";
+
+            var dtoObject = token.Match<TokenDTO>();
+        }
     }
 }
